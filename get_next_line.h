@@ -6,13 +6,29 @@
 /*   By: angsanch <angsanch@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/25 20:45:54 by angsanch          #+#    #+#             */
-/*   Updated: 2023/12/25 21:12:54 by angsanch         ###   ########.fr       */
+/*   Updated: 2023/12/26 11:58:24 by angsanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 1024
+# endif
+
+# include <stdlib.h>
+# include <unistd.h>
+# include <sys/select.h>
+
+typedef struct buffer{
+	size_t	used;
+	char	b[BUFFER_SIZE];
+}	t_buff;
+
 char	*get_next_line(int fd);
+void	*ft_memcpy(void *dst, const void *src, size_t n);
+int		ft_strnchr_index(const char *s, int c, int len);
+void	*ft_memmove(void *dst, const void *src, size_t n);
 
 #endif
