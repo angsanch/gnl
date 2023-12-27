@@ -6,7 +6,7 @@
 /*   By: angsanch <angsanch@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/26 09:15:55 by angsanch          #+#    #+#             */
-/*   Updated: 2023/12/27 10:40:55 by angsanch         ###   ########.fr       */
+/*   Updated: 2023/12/27 11:09:51 by angsanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 static char	*process_buffer(int fd, t_buff *b)
 {
-	char			*result;
-	char			*copy;
-	size_t			size;
-	int				line_len;
-	unsigned int	readed;
+	char		*result;
+	char		*copy;
+	size_t		size;
+	int			line_len;
+	long int	readed;
 
 	size = 0;
 	result = NULL;
@@ -61,5 +61,7 @@ char	*get_next_line(int fd)
 		}
 		buffs[0].used = 1;
 	}
+	if (fd < 0)
+		return (NULL);
 	return (process_buffer(fd, &buffs[fd + 1]));
 }
