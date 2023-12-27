@@ -6,7 +6,7 @@
 /*   By: angsanch <angsanch@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/25 20:45:54 by angsanch          #+#    #+#             */
-/*   Updated: 2023/12/27 09:41:07 by angsanch         ###   ########.fr       */
+/*   Updated: 2023/12/27 21:03:13 by angsanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@
 # include <unistd.h>
 # include <sys/select.h>
 
-typedef struct buffer{
+typedef struct buffer
+{
 	size_t	used;
 	char	b[BUFFER_SIZE];
 }	t_buff;
