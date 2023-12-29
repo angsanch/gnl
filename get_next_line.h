@@ -6,7 +6,7 @@
 /*   By: angsanch <angsanch@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/25 20:45:54 by angsanch          #+#    #+#             */
-/*   Updated: 2023/12/27 21:03:13 by angsanch         ###   ########.fr       */
+/*   Updated: 2023/12/29 17:35:26 by angsanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,16 @@
 
 # include <stdlib.h>
 # include <unistd.h>
+# include <stdio.h>
 # include <sys/select.h>
 
-typedef struct buffer
+typedef struct file
 {
-	size_t	used;
-	char	b[BUFFER_SIZE];
-}	t_buff;
+	char	*buffer;
+	size_t	buff_len;
+	char	*line;
+	ssize_t	len;
+}	t_file;
 
 char	*get_next_line(int fd);
 void	*ft_memcpy(void *dst, const void *src, size_t n);

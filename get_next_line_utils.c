@@ -6,7 +6,7 @@
 /*   By: angsanch <angsanch@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/26 09:16:39 by angsanch          #+#    #+#             */
-/*   Updated: 2023/12/27 10:01:29 by angsanch         ###   ########.fr       */
+/*   Updated: 2023/12/29 15:42:51 by angsanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,14 @@ int	ft_strnchr_index(const char *s, int c, int len)
 
 	chr = c;
 	i = 0;
-	while (s[i] != chr && s[i] != 0 && i < len)
+	while (i < len)
+	{
+		if (s[i] == chr)
+			break ;
 		i ++;
+	}
+	if (i >= len)
+		return (-1);
 	if (s[i] == chr)
 		return (i);
 	else

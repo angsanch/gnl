@@ -6,62 +6,82 @@
 /*   By: angsanch <angsanch@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/26 09:15:55 by angsanch          #+#    #+#             */
-/*   Updated: 2023/12/27 11:09:51 by angsanch         ###   ########.fr       */
+/*   Updated: 2023/12/29 18:47:21 by angsanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static char	*process_buffer(int fd, t_buff *b)
+static void	extract_line(t_file *f)
 {
-	char		*result;
-	char		*copy;
-	size_t		size;
-	int			line_len;
-	long int	readed;
+	if (f->buffer == NULL || f->buff_len == 0)
+	{
+		f->len = 0;
+		f->line = NULL;
+		return ;
+	}
+	f->len = ft_strnchr_index(f->buffer, '\n', f->buff_len);
+	if (f->len == -1)
+	{
+		f->line = ft_memjoin(f->buffer, f->buff_len, "\0", 1);
+		f->len = f->buff_len;
+		f->buff_len = 0;
+		free(f->buffer);
+		f->buffer = NULL;
+		return ;
+	}
+	f->line = ft_memjoin(f->buffer, f->len + 1, "\0", 1);
+	f->buff_len -= f->len + 1;
+	ft_memmove(f->buffer, f->buffer + f->len + 1, f->buff_len);
+}
 
-	size = 0;
-	result = NULL;
+static int	read_until_end_line(int fd, t_file *f)
+{
+	char	*buffer;
+	long	readed;
+	char	*b_copy;
+
+	buffer = malloc(sizeof(char *) * BUFFER_SIZE);
+	if (buffer == NULL)
+		return (0);
 	while (1)
 	{
-		readed = read(fd, b->b + b->used, BUFFER_SIZE - b->used);
-		if (readed <= 0 && b->used == 0)
-			return (result);
-		b->used += readed;
-		copy = result;
-		result = ft_memjoin(result, size, b->b, b->used);
-		free(copy);
-		if (result == NULL)
-			return (NULL);
-		size += b->used;
-		result[size] = 0;
-		b->used = 0;
-		line_len = ft_strnchr_index(result, '\n', size);
-		if (line_len != -1)
-			break ;
+		readed = read(fd, buffer, BUFFER_SIZE);
+		if (readed <= 0)
+		{
+			free(buffer);
+			return (readed == 0);
+		}
+		b_copy = f->buffer;
+		f->buffer = ft_memjoin(f->buffer, f->buff_len, buffer, readed);
+		free(b_copy);
+		f->buff_len += readed;
+		if (ft_strnchr_index(f->buffer, '\n', f->buff_len) != -1)
+		{
+			free (buffer);
+			return (1);
+		}
 	}
-	ft_memcpy(b->b, result + line_len + 1, size - line_len - 1);
-	b->used = size - line_len - 1;
-	result[line_len + 1] = 0;
-	return (result);
+}
+
+static char	*get_line(int fd, t_file *f)
+{
+	if (read_until_end_line(fd, f) == 0)
+	{
+		free (f->buffer);
+		f->buff_len = 0;
+		f->len = 0;
+		return (NULL);
+	}
+	extract_line(f);
+	return (f->line);
 }
 
 char	*get_next_line(int fd)
 {
-	static t_buff	buffs[FD_SETSIZE + 1] = {{0, ""}};
-	unsigned int	i;
+	static t_file	file = {NULL, 0, NULL, 0};
 
-	if (buffs[0].used == 0)
-	{
-		i = 1;
-		while (i < FD_SETSIZE)
-		{
-			buffs[i].used = 0;
-			i ++;
-		}
-		buffs[0].used = 1;
-	}
 	if (fd < 0)
 		return (NULL);
-	return (process_buffer(fd, &buffs[fd + 1]));
+	return (get_line(fd, &file));
 }
