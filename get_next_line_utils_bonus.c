@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
+/*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: angsanch <angsanch@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/26 09:16:39 by angsanch          #+#    #+#             */
-/*   Updated: 2023/12/29 18:41:04 by angsanch         ###   ########.fr       */
+/*   Updated: 2023/12/30 00:04:36 by angsanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,15 @@ void	*ft_memjoin(const void *m1, size_t s1, const void *m2, size_t s2)
 		return (NULL);
 	ft_memcpy(result, m1, s1);
 	ft_memcpy(result + s1, m2, s2);
+	return (result);
+}
+
+void	*memjoin_free(const void *m1, size_t s1, const void *m2, size_t s2)
+{
+	void	*result;
+
+	result = ft_memjoin(m1, s1, m2, s2);
+	free((void *)m1);
 	return (result);
 }
 

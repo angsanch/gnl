@@ -6,7 +6,7 @@
 /*   By: angsanch <angsanch@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/25 20:45:54 by angsanch          #+#    #+#             */
-/*   Updated: 2023/12/29 17:35:26 by angsanch         ###   ########.fr       */
+/*   Updated: 2023/12/30 00:02:32 by angsanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,6 @@ void	*ft_memcpy(void *dst, const void *src, size_t n);
 int		ft_strnchr_index(const char *s, int c, int len);
 void	*ft_memmove(void *dst, const void *src, size_t n);
 void	*ft_memjoin(const void *m1, size_t s1, const void *m2, size_t s2);
+void	*memjoin_free(const void *m1, size_t s1, const void *m2, size_t s2);
 
 #endif

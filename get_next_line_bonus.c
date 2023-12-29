@@ -6,7 +6,7 @@
 /*   By: angsanch <angsanch@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/26 09:15:55 by angsanch          #+#    #+#             */
-/*   Updated: 2023/12/29 18:45:35 by angsanch         ###   ########.fr       */
+/*   Updated: 2023/12/30 00:05:31 by angsanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ static int	read_until_end_line(int fd, t_file *f)
 {
 	char	*buffer;
 	long	readed;
-	char	*b_copy;
 
 	buffer = malloc(sizeof(char *) * BUFFER_SIZE);
 	if (buffer == NULL)
@@ -50,11 +49,11 @@ static int	read_until_end_line(int fd, t_file *f)
 		if (readed <= 0)
 		{
 			free(buffer);
+			if (readed == 0 && f->buff_len == 0)
+				free(f->buffer);
 			return (readed == 0);
 		}
-		b_copy = f->buffer;
-		f->buffer = ft_memjoin(f->buffer, f->buff_len, buffer, readed);
-		free(b_copy);
+		f->buffer = memjoin_free(f->buffer, f->buff_len, buffer, readed);
 		f->buff_len += readed;
 		if (ft_strnchr_index(f->buffer, '\n', f->buff_len) != -1)
 		{
